@@ -18,6 +18,12 @@ struct MyEguiApp {}
 
 impl eframe::App for MyEguiApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        egui::CentralPanel::default().show(ctx, |ui| {
+            // add the cables outside of the windows, so that unplugged plugs don't move with the windows
+            ui.add(Cable::new(0, Plug::to(0), Plug::to(1)));
+            ui.add(Cable::new(1, Plug::to(0), Plug::to(3)));
+            ui.add(Cable::new(2, Plug::to(2), Plug::unplugged()));
+        });
         egui::Window::new("My window")
             .default_pos(pos2(20.0, 100.0))
             .show(ctx, |ui| {
@@ -34,10 +40,6 @@ impl eframe::App for MyEguiApp {
             .default_pos(pos2(200.0, 200.0))
             .show(ctx, |ui| {
                 ui.add(Port::new(3));
-
-                ui.add(Cable::new(0, Plug::to(0), Plug::to(1)));
-                ui.add(Cable::new(1, Plug::to(0), Plug::to(3)));
-                ui.add(Cable::new(2, Plug::to(2), Plug::unplugged()));
             });
     }
 
