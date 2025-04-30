@@ -24,7 +24,7 @@ impl Widget for CableControl {
             .show(ui.ctx(), |ui| {
                 if size.is_none() {
                     // hide cable control for first rendering.
-                    ui.set_visible(false);
+                    ui.set_invisible();
                 }
                 // should be displayed on cable bezier
                 ui.ctx().move_to_top(ui.layer_id());

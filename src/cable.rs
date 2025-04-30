@@ -145,7 +145,7 @@ impl Widget for Cable {
                         pos: cable_control_pos,
                         widget: self.control_widget.unwrap_or_else(|| DefaultControl.into()),
                     },
-                    bezier,
+                    bezier: bezier.clone(),
                 }
                 .set(ui);
                 let response = self.widget.unwrap_or_else(|| DefaultCable.into()).ui(ui);

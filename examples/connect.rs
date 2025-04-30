@@ -2,12 +2,15 @@ use eframe::egui;
 use egui_cable::prelude::*;
 
 fn main() {
-    let mut native_options = eframe::NativeOptions::default();
-    native_options.default_theme = eframe::Theme::Light;
+    let native_options = eframe::NativeOptions::default();
+
     eframe::run_native(
         "My egui App",
         native_options,
-        Box::new(|_| Box::new(MyEguiApp::default())),
+        Box::new(|ctx| {
+            ctx.egui_ctx.set_theme(egui::Theme::Light);
+            Ok(Box::new(MyEguiApp::default()))
+        }),
     )
     .expect("Failed to start native platform");
 }

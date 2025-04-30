@@ -2,7 +2,6 @@ use std::fmt::Debug;
 use std::hash::Hash;
 
 use egui::{Vec2, Widget};
-use egui_hooks::UseHookExt as _;
 
 use crate::{
     custom_widget::CustomWidget, default_port::DefaultPort, id::Id, plug::DraggedPlug,
@@ -55,9 +54,6 @@ impl Widget for Port {
                 size: Vec2::ZERO,
             });
 
-            println!("dragged: {:?}", dragged_plug.pos);
-            println!("response: {:?}", response.rect.center());
-
             // distance between the port and the dragged plug
             let distance_sq = response.rect.center().distance_sq(dragged_plug.pos);
             let min_length = |vec: Vec2| vec.x.min(vec.y);
@@ -69,7 +65,6 @@ impl Widget for Port {
 
             // update hovered port id used for cable connection
             if hovered {
-                println!("hoverd: {:?}", self.port_id);
                 state.update_hovered_port_id(self.port_id);
             }
 

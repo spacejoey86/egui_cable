@@ -3,12 +3,14 @@ use egui::{pos2, Rect, Sense, Vec2};
 use egui_cable::prelude::*;
 
 fn main() {
-    let mut native_options = eframe::NativeOptions::default();
-    native_options.default_theme = eframe::Theme::Light;
+    let native_options = eframe::NativeOptions::default();
     eframe::run_native(
         "My egui App",
         native_options,
-        Box::new(|_| Box::new(MyEguiApp::new())),
+        Box::new(|ctx| {
+            ctx.egui_ctx.set_theme(egui::Theme::Light);
+            Ok(Box::new(MyEguiApp::new()))
+        }),
     )
     .expect("Failed to start native application");
 }
@@ -38,7 +40,7 @@ impl egui::Widget for CustomCable {
         // we need a response to return. There might be a better way of getting this?
         let (_, mut response) = ui.allocate_at_least(Vec2::splat(0.0), Sense::hover());
         // pretend the cable control (that we don't have) has been clicked, so the cable is considered activated
-        response.fake_primary_click = true;
+        response.flags.set(egui::response::Flags::FAKE_PRIMARY_CLICKED, true);
         // the interact_rect is EVERYTHING so that no clicks are considered outside (which deactivates the cable)
         response.interact_rect = Rect::EVERYTHING;
         return response;

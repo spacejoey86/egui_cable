@@ -25,7 +25,7 @@ impl Widget for DefaultCable {
         } else {
             ui.interact(
                 Rect::NOTHING,
-                egui::Id::new("dummy-cable-control"),
+                egui::Id::new((cable_control.id, "dummy-cable-control")),
                 Sense::focusable_noninteractive(),
             )
         };
@@ -40,7 +40,7 @@ impl Widget for DefaultCable {
             } else {
                 widget_visuals(ui, &response)
             };
-            bezier.stroke = cable_visual.fg_stroke;
+            bezier.stroke = cable_visual.fg_stroke.into();
 
             // paint bezier curve or circle
             if in_pos == out_pos {
@@ -68,8 +68,13 @@ impl Widget for DefaultControl {
         let (rect, response) = ui.allocate_exact_size(SIZE, Sense::click_and_drag());
         if ui.is_rect_visible(rect) {
             let visuals = widget_visuals(ui, &response);
-            ui.painter()
-                .rect(rect, 3.0, visuals.bg_fill, visuals.fg_stroke);
+            ui.painter().rect(
+                rect,
+                3.0,
+                visuals.bg_fill,
+                visuals.fg_stroke,
+                egui::StrokeKind::Inside,
+            );
         }
         response
     }

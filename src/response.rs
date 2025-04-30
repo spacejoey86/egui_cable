@@ -51,7 +51,7 @@ impl PlugResponse {
         let state = State::get_with_ctx(&mut self.0.ctx);
         matches!(
             state.ephemeral.event_of_plug.get(&self.0.id),
-            Some(Event::Disconnected { .. })
+            Some(Event::Disconnected)
         )
     }
 

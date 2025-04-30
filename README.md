@@ -7,15 +7,20 @@
 
 A generic and extensible data-oriented widget for connecting ports by cables.
 
-I create this for the visual programming editor of [Hihaheho/Desk](https://github.com/Hihaheho/Desk).
-
-It's good for:
+Nice to use for:
 
 - analog synthesizer-like UI
 - node-based UI
-- anything you can imagine
 
-The code is good for studying how to write egui widgets.
+## Versions
+
+| egui | egui_cable |
+| ---- | ---------- |
+| 0.27 | 0.5        |
+| 0.28 | 0.6        |
+| 0.29 | 0.7        |
+| 0.30 | 0.8        |
+| 0.31 | 0.9        |
 
 ## Features
 
@@ -39,4 +44,3 @@ Click the images to see the source code. See [/examples](https://github.com/ryo3
 [![Simple example](https://user-images.githubusercontent.com/8780513/170413124-5400d9b4-8f10-4607-bc37-23acc8c6b842.png)](https://github.com/ryo33/egui_cable/blob/main/examples/simple.rs)
 
 [![Connect example](https://user-images.githubusercontent.com/8780513/170408794-ef879b04-9095-4c48-94d6-4773af9437e1.png)](https://github.com/ryo33/egui_cable/blob/main/examples/connect.rs)
-

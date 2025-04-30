@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 use std::hash::Hash;
 
-use egui::{vec2, Order, Pos2, Vec2, Widget};
+use egui::{vec2, Order, Pos2, Sense, Vec2, Widget};
 
 use crate::{
     cable::CableId, custom_widget::CustomWidget, default_plug::DefaultPlug, event::Event,
@@ -148,6 +148,8 @@ impl Widget for Plug {
             .current_pos(pos)
             // should be displayed on foreground
             .order(Order::Foreground)
+            // interactions happen with the widget not this area
+            .sense(Sense::hover())
             .show(ui.ctx(), |ui| {
                 // render plug with params
                 PlugParams {
