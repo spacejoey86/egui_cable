@@ -43,6 +43,8 @@ pub struct Plug {
     cable_active: bool,
     // inserted by Cable widget
     vec: Option<Vec2>,
+    pub(crate) forwarded_drag_stop: bool,
+    pub(crate) forwarded_drag: Option<Vec2>,
 }
 
 #[derive(Debug, Clone)]
@@ -169,12 +171,15 @@ impl Widget for Plug {
 
                 // handle drag
                 pos += response.drag_delta();
+                if let Some(delta) = self.forwarded_drag {
+                    pos += delta;
+                }
 
                 // this should not be response.rect.center_size for painting it correctly
                 let center_pos = pos + size / 2.0;
 
                 // Update plug pos used for determining a port is hovered by plug
-                plug_state.dragged = response.dragged();
+                plug_state.dragged = response.dragged() || self.forwarded_drag.is_some();
                 if plug_state.dragged {
                     state.update_dragged_plug(DraggedPlug {
                         pos: center_pos,
@@ -182,7 +187,7 @@ impl Widget for Plug {
                     });
                 }
 
-                if response.drag_stopped() {
+                if response.drag_stopped() || self.forwarded_drag_stop {
                     match (self.plug_to, state.hovered_port_id()) {
                         // Connect event
                         (_, Some(port_id)) => {

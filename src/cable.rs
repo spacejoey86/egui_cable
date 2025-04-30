@@ -48,6 +48,16 @@ impl Cable {
         self.control_widget = Some(widget.into());
         self
     }
+
+    pub fn forward_drag(mut self, delta: Vec2) -> Self {
+        self.out_plug.forwarded_drag = Some(delta);
+        self
+    }
+
+    pub fn forward_drag_stop(mut self) -> Self {
+        self.out_plug.forwarded_drag_stop = true;
+        self
+    }
 }
 
 #[derive(Clone, Debug)]
