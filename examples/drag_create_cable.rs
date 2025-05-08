@@ -66,7 +66,9 @@ impl eframe::App for MyEguiApp {
                     my_cable = my_cable.forward_drag(
                         response.drag_delta()
                             + (response.interact_pointer_pos().unwrap() - response.rect.center())
-                            - vec2(50.0, 0.0)
+                            - vec2(50.0, 0.0) // cable.rs line 102
+                            - vec2(8.0, 8.0) // half of utils.rs SIZE
+                            - vec2(2.0, 2.0) // extra offset to get the plug where I want it
                             - (ui.next_widget_position() - response.rect.center()),
                     )
                 } else if response.dragged() && (index + 1) == num_cables {
