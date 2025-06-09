@@ -4,8 +4,12 @@ use std::hash::Hash;
 use egui::{Vec2, Widget};
 
 use crate::{
-    custom_widget::CustomWidget, default_port::DefaultPort, id::Id, plug::DraggedPlug,
-    port_params::PortParams, state::State,
+    custom_widget::CustomWidget,
+    default_port::DefaultPort,
+    id::Id,
+    plug::DraggedPlug,
+    port_params::PortParams,
+    state::{PortDragData, State},
 };
 
 pub type PortId = Id;
@@ -43,6 +47,18 @@ impl Widget for Port {
             }
             .set(ui);
             let response = self.widget.unwrap_or_else(|| DefaultPort.into()).ui(ui);
+
+            // save drag to global state, for creating and drawing a new cable later
+            let drag = if response.dragged() || response.drag_started() {
+                Some(response.drag_delta())
+            } else {
+                None
+            };
+            state.update_dragged_port(PortDragData {
+                drag_from: self.port_id.clone(),
+                drag_stopped: response.drag_stopped(),
+                drag: drag,
+            });
 
             // advance generation if this port is rendered twice
             state.advance_generation_if_twice(self.port_id.clone());

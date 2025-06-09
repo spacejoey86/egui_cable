@@ -110,10 +110,10 @@ impl Plug {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub(crate) struct PlugState {
-    pos_offset: Vec2,
-    dragged: bool,
+    pub pos_offset: Vec2,
+    pub dragged: bool,
 }
 
 impl Widget for Plug {
@@ -169,6 +169,9 @@ impl Widget for Plug {
 
                 // handle drag
                 pos += response.drag_delta();
+                if let Some(dragged_port_data) =  state.dragged_port() {
+                    pos += dragged_port_data.drag.unwrap_or_default()
+                }
 
                 // this should not be response.rect.center_size for painting it correctly
                 let center_pos = pos + size / 2.0;

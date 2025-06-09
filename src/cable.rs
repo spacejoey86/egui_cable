@@ -8,7 +8,7 @@ use crate::{
     cable_control::CableControl,
     custom_widget::CustomWidget,
     default_cable::{DefaultCable, DefaultControl},
-    plug::{PlugId, PlugType},
+    plug::{PlugId, PlugState, PlugType},
     prelude::*,
     state::State,
 };
@@ -36,6 +36,42 @@ impl Cable {
             out_plug,
             widget: None,
             control_widget: None,
+        }
+    }
+
+    pub fn create_if_drag<T: Debug + Eq + Hash + Send + Sync + 'static>(
+        id: T,
+        ui: &mut egui::Ui,
+    ) -> Option<Self> {
+        let mut state = State::get_cloned(ui);
+        match state.dragged_port() {
+            Some(dragged_port) => {
+                let cable = Cable {
+                    id: CableId::new(id),
+                    in_plug: Plug::to(dragged_port.drag_from),
+                    out_plug: Plug::unplugged(),
+                    widget: None,
+                    control_widget: None,
+                };
+
+                // set drag flag:
+
+                // is this duplicated code? TODO: maybe refactor
+                // see where the id is also generated
+                let plug_id = PlugId::new(cable.id, PlugType::In);
+                // cable.in_plug = cable.in_plug.id(plug_id.clone());
+
+                let mut plug_state = state.plug_state(&plug_id).unwrap_or(PlugState {
+                    pos_offset: dragged_port.drag.unwrap_or_default(),
+                    dragged: true,
+                });
+                plug_state.dragged = true;
+                state.update_plug_state(plug_id, plug_state);
+                state.store_to(ui);
+
+                return Some(cable);
+            }
+            None => return None,
         }
     }
 

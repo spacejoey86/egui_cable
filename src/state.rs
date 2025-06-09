@@ -28,12 +28,20 @@ pub(crate) struct EphemeralState {
     pub event_of_plug: HashMap<Id, Event>,
 }
 
+#[derive(Clone, Debug)]
+pub(crate) struct PortDragData {
+    pub drag_from: PortId,
+    pub drag_stopped: bool,
+    pub drag: Option<Vec2>, 
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 enum Key {
     PortPos,
     PlugState,
     CableState,
     HoveredPort,
+    DraggedPort,
     DraggedPlug,
     CableControlSize,
 }
@@ -136,6 +144,7 @@ impl State {
     );
 
     kv!(HoveredPort, hovered_port_id, update_hovered_port_id, PortId);
+    kv!(DraggedPort, dragged_port, update_dragged_port, PortDragData);
     kv!(DraggedPlug, dragged_plug, update_dragged_plug, DraggedPlug);
 
     pub fn get_cloned(ui: &mut egui::Ui) -> Self {
