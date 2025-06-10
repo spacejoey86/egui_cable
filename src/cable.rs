@@ -44,11 +44,11 @@ impl Cable {
         ui: &mut egui::Ui,
     ) -> Option<Self> {
         let mut state = State::get_cloned(ui);
-        match state.dragged_port() {
+        match &state.ephemeral.port_drag {
             Some(dragged_port) => {
                 let cable = Cable {
                     id: CableId::new(id),
-                    in_plug: Plug::to(dragged_port.drag_from),
+                    in_plug: Plug::to(dragged_port.drag_from.clone()),
                     out_plug: Plug::unplugged(),
                     widget: None,
                     control_widget: None,
@@ -63,6 +63,7 @@ impl Cable {
 
                 let mut plug_state = state.plug_state(&plug_id).unwrap_or(PlugState {
                     pos_offset: dragged_port.drag.unwrap_or_default(), // offset this?
+                    // does this offset already get applied the first frame of dragging? should this just be zero?
                     dragged: true,
                 });
                 plug_state.dragged = true;

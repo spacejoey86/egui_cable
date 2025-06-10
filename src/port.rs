@@ -55,7 +55,7 @@ impl Widget for Port {
                 } else {
                     None
                 };
-                state.update_dragged_port(PortDragData {
+                state.ephemeral.port_drag = Some(PortDragData {
                     drag_from: self.port_id.clone(),
                     drag_stopped: response.drag_stopped(),
                     drag: drag,

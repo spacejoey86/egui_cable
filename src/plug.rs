@@ -169,7 +169,7 @@ impl Widget for Plug {
 
                 // handle drag
                 pos += response.drag_delta();
-                if let Some(dragged_port_data) =  state.dragged_port() {
+                if let Some(dragged_port_data) = &state.ephemeral.port_drag {
                     pos += dragged_port_data.drag.unwrap_or_default()
                 }
 

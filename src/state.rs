@@ -26,6 +26,7 @@ pub(crate) struct GenerationState {
 pub(crate) struct EphemeralState {
     pub plug_responses_of_cable: HashMap<Id, (Response, Response)>,
     pub event_of_plug: HashMap<Id, Event>,
+    pub port_drag: Option<PortDragData>,
 }
 
 #[derive(Clone, Debug)]
@@ -144,7 +145,6 @@ impl State {
     );
 
     kv!(HoveredPort, hovered_port_id, update_hovered_port_id, PortId);
-    kv!(DraggedPort, dragged_port, update_dragged_port, PortDragData);
     kv!(DraggedPlug, dragged_plug, update_dragged_plug, DraggedPlug);
 
     pub fn get_cloned(ui: &mut egui::Ui) -> Self {
