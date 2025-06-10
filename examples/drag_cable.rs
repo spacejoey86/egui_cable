@@ -71,29 +71,19 @@ impl eframe::App for MyEguiApp {
                 // you could handle it here if you wanted to allow floating plugs
             }
 
-            println!("\nbefore: {:?}", self.connected);
-
             // draw dragged cable
             if let Some(dragged_cable) = Cable::create_if_drag(self.connected.len(), ui) {
                 let mut response = ui.add(dragged_cable);
                 if let Some(connected_id) = response.out_plug().connected_to() {
-                    println!("Adding cable");
                     self.connected.push((
-                        Some(
-                            response
-                                .in_plug()
-                                .connected_to()
-                                .unwrap()
-                                .downcast_ref::<usize>()
-                                .unwrap()
-                                .clone(),
-                        ),
+                        response
+                            .in_plug()
+                            .connected_to()
+                            .map(|id| id.downcast_ref::<usize>().unwrap().clone()),
                         Some(connected_id.downcast_ref::<usize>().unwrap().clone()),
                     ))
                 }
             }
-
-            println!("\nafter: {:?}", self.connected);
         });
     }
 
