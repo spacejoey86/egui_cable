@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 use std::hash::Hash;
 
-use egui::{Vec2, Widget};
+use egui::{vec2, Vec2, Widget};
 
 use crate::{
     custom_widget::CustomWidget,
@@ -55,7 +55,17 @@ impl Widget for Port {
 
             // save drag to global state, for creating and drawing a new cable later
             if response.drag_started() || response.dragged() || response.drag_stopped() {
-                let drag = if response.dragged() || response.drag_started() {
+                let drag = if response.drag_started() {
+                    Some(
+                        response.drag_delta()
+                            + ( 
+                            vec2(response.interact_pointer_pos().unwrap().x, response.interact_pointer_pos().unwrap().y)
+                            - vec2(50.0, 0.0) // offset added by setting default positions when drawing cable
+                            - vec2(8.0, 8.0) // half of utils.rs SIZE
+                            - vec2(2.0, 2.0) // extra offset to get the plug in the right place
+                            ) / 2.0 // seems to all be doubled
+                    )
+                } else if response.dragged() {
                     Some(response.drag_delta())
                 } else {
                     None

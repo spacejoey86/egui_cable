@@ -1,5 +1,4 @@
 use eframe::egui;
-use egui::{response, vec2};
 use egui_cable::prelude::*;
 
 fn main() {

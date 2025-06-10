@@ -55,15 +55,10 @@ impl Cable {
                 };
 
                 // set drag flag:
-
-                // is this duplicated code? TODO: maybe refactor
-                // see where the id is also generated
                 let plug_id = PlugId::new(cable.id, PlugType::Out);
-                // cable.in_plug = cable.in_plug.id(plug_id.clone());
-
                 let mut plug_state = state.plug_state(&plug_id).unwrap_or(PlugState {
-                    pos_offset: dragged_port.drag.unwrap_or_default(), // offset this?
-                    // does this offset already get applied the first frame of dragging? should this just be zero?
+                    pos_offset: dragged_port.drag.unwrap_or_default()
+                        - vec2(ui.next_widget_position().x, ui.next_widget_position().y),
                     dragged: true,
                 });
                 plug_state.dragged = true;

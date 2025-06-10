@@ -43,7 +43,6 @@ enum Key {
     PlugState,
     CableState,
     HoveredPort,
-    DraggedPort,
     DraggedPlug,
     CableControlSize,
 }
