@@ -64,6 +64,7 @@ impl Widget for Port {
                     drag_from: self.port_id.clone(),
                     drag_stopped: response.drag_stopped(),
                     drag: drag,
+                    new_cable: None,
                 });
             }
 

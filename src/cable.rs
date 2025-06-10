@@ -68,6 +68,11 @@ impl Cable {
                 });
                 plug_state.dragged = true;
                 state.update_plug_state(plug_id, plug_state);
+                state
+                    .ephemeral
+                    .port_drag
+                    .as_mut()
+                    .map(|port_drag_data| port_drag_data.new_cable = Some(cable.id));
                 state.store_to(ui);
 
                 return Some(cable);

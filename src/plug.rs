@@ -163,14 +163,20 @@ impl Widget for Plug {
                 if self.cable_active {
                     ui.ctx().move_to_top(ui.layer_id());
                 }
-                let response = self.widget.unwrap_or_else(|| DefaultPlug.into()).ui(ui);
+                let mut response = self.widget.unwrap_or_else(|| DefaultPlug.into()).ui(ui);
 
                 let size = response.rect.size();
 
                 // handle drag
                 pos += response.drag_delta();
                 if let Some(dragged_port_data) = &state.ephemeral.port_drag {
-                    pos += dragged_port_data.drag.unwrap_or_default()
+                    if let Some(new_dragged_cable) = dragged_port_data.new_cable {
+                        if new_dragged_cable == id.cable_id && matches!(id.plug_type, PlugType::Out) {
+                            pos += dragged_port_data.drag.unwrap_or_default();
+                            response.flags.set(egui::response::Flags::DRAGGED, dragged_port_data.drag.is_some());
+                            response.flags.set(egui::response::Flags::DRAG_STOPPED, dragged_port_data.drag_stopped);
+                        }
+                    }
                 }
 
                 // this should not be response.rect.center_size for painting it correctly

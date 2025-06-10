@@ -33,7 +33,8 @@ pub(crate) struct EphemeralState {
 pub(crate) struct PortDragData {
     pub drag_from: PortId,
     pub drag_stopped: bool,
-    pub drag: Option<Vec2>, 
+    pub drag: Option<Vec2>,
+    pub new_cable: Option<CableId>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
