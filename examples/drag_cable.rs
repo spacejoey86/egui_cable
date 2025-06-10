@@ -43,9 +43,8 @@ impl eframe::App for MyEguiApp {
                 ui.add(Port::new(5usize));
             });
 
-            // add a port that you can create cables from
             ui.add_space(150.0);
-            let response = ui.add(Port::new(6usize));
+            ui.add(Port::new(6usize));
 
             fn helper(port_index: &Option<usize>) -> Plug {
                 match port_index {
@@ -53,8 +52,6 @@ impl eframe::App for MyEguiApp {
                     None => Plug::unplugged(),
                 }
             }
-
-            let num_cables = self.connected.len();
 
             // draw existing cables
             for (index, (from, to)) in self.connected.iter_mut().enumerate() {
