@@ -48,6 +48,11 @@ impl Widget for Port {
             .set(ui);
             let response = self.widget.unwrap_or_else(|| DefaultPort.into()).ui(ui);
 
+            // advance generation if this port is rendered twice
+            state.advance_generation_if_twice(self.port_id.clone());
+            // update port's position used for plug rendering
+            state.update_port_pos(self.port_id.clone(), response.rect.left_top());
+
             // save drag to global state, for creating and drawing a new cable later
             if response.drag_started() || response.dragged() || response.drag_stopped() {
                 let drag = if response.dragged() || response.drag_started() {
@@ -61,11 +66,6 @@ impl Widget for Port {
                     drag: drag,
                 });
             }
-
-            // advance generation if this port is rendered twice
-            state.advance_generation_if_twice(self.port_id.clone());
-            // update port's position used for plug rendering
-            state.update_port_pos(self.port_id.clone(), response.rect.left_top());
 
             let dragged_plug = state.dragged_plug().unwrap_or(DraggedPlug {
                 pos: egui::pos2(-100.0, -100.0), // far
