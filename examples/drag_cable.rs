@@ -46,9 +46,6 @@ impl eframe::App for MyEguiApp {
             // add a port that you can create cables from
             ui.add_space(150.0);
             let response = ui.add(Port::new(6usize));
-            if response.drag_started() {
-                self.connected.push((Some(6usize), None));
-            }
 
             fn helper(port_index: &Option<usize>) -> Plug {
                 match port_index {
@@ -74,10 +71,13 @@ impl eframe::App for MyEguiApp {
                 // you could handle it here if you wanted to allow floating plugs
             }
 
+            println!("\nbefore: {:?}", self.connected);
+
             // draw dragged cable
             if let Some(dragged_cable) = Cable::create_if_drag(self.connected.len(), ui) {
                 let mut response = ui.add(dragged_cable);
                 if let Some(connected_id) = response.out_plug().connected_to() {
+                    println!("Adding cable");
                     self.connected.push((
                         Some(
                             response
@@ -92,6 +92,8 @@ impl eframe::App for MyEguiApp {
                     ))
                 }
             }
+
+            println!("\nafter: {:?}", self.connected);
         });
     }
 

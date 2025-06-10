@@ -13,7 +13,7 @@ impl Widget for DefaultPort {
         let params = PortParams::get(ui);
         let hovered = params.hovered;
 
-        let (rect, response) = ui.allocate_exact_size(SIZE, Sense::click());
+        let (rect, response) = ui.allocate_exact_size(SIZE, Sense::drag());
 
         if ui.is_rect_visible(rect) {
             // paint the port

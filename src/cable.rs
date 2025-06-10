@@ -58,11 +58,11 @@ impl Cable {
 
                 // is this duplicated code? TODO: maybe refactor
                 // see where the id is also generated
-                let plug_id = PlugId::new(cable.id, PlugType::In);
+                let plug_id = PlugId::new(cable.id, PlugType::Out);
                 // cable.in_plug = cable.in_plug.id(plug_id.clone());
 
                 let mut plug_state = state.plug_state(&plug_id).unwrap_or(PlugState {
-                    pos_offset: dragged_port.drag.unwrap_or_default(),
+                    pos_offset: dragged_port.drag.unwrap_or_default(), // offset this?
                     dragged: true,
                 });
                 plug_state.dragged = true;

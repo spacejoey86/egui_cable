@@ -49,16 +49,18 @@ impl Widget for Port {
             let response = self.widget.unwrap_or_else(|| DefaultPort.into()).ui(ui);
 
             // save drag to global state, for creating and drawing a new cable later
-            let drag = if response.dragged() || response.drag_started() {
-                Some(response.drag_delta())
-            } else {
-                None
-            };
-            state.update_dragged_port(PortDragData {
-                drag_from: self.port_id.clone(),
-                drag_stopped: response.drag_stopped(),
-                drag: drag,
-            });
+            if response.drag_started() || response.dragged() || response.drag_stopped() {
+                let drag = if response.dragged() || response.drag_started() {
+                    Some(response.drag_delta())
+                } else {
+                    None
+                };
+                state.update_dragged_port(PortDragData {
+                    drag_from: self.port_id.clone(),
+                    drag_stopped: response.drag_stopped(),
+                    drag: drag,
+                });
+            }
 
             // advance generation if this port is rendered twice
             state.advance_generation_if_twice(self.port_id.clone());
