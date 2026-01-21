@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 use std::hash::Hash;
 
-use egui::{pos2, vec2, Id, Order, Pos2, Vec2, Widget};
+use egui::{pos2, vec2, Id, Order, Pos2, Response, Vec2, Widget};
 use epaint::{Color32, QuadraticBezierShape};
 
 use crate::{
@@ -56,6 +56,25 @@ impl Cable {
 
     pub fn forward_drag_stop(mut self) -> Self {
         self.out_plug.forwarded_drag_stop = true;
+        self
+    }
+
+    pub fn forward_drag_response(mut self, port_drag_response: &Response) -> Self {
+        if port_drag_response.drag_started()  {
+            self = self.forward_drag(
+                port_drag_response.drag_delta()
+                    + (port_drag_response.interact_pointer_pos().unwrap() - port_drag_response.rect.center())
+                    - vec2(50.0, 0.0) // cable.rs line 102
+                    - vec2(8.0, 8.0) // half of utils.rs SIZE
+                    - vec2(2.0, 2.0) // extra offset to get the plug where I want it
+                    // - (ui.next_widget_position() - port_drag_response.rect.center()),
+            );
+        } else if port_drag_response.dragged() {
+            self = self.forward_drag(port_drag_response.drag_delta());
+        }
+        if port_drag_response.drag_stopped() {
+            self.out_plug.forwarded_drag_stop = true;
+        }
         self
     }
 }

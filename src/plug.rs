@@ -165,7 +165,10 @@ impl Widget for Plug {
                 if self.cable_active {
                     ui.ctx().move_to_top(ui.layer_id());
                 }
-                let response = self.widget.unwrap_or_else(|| DefaultPlug.into()).ui(ui);
+                let mut response = self.widget.unwrap_or_else(|| DefaultPlug.into()).ui(ui);
+                if self.forwarded_drag_stop {
+                    response.flags.set(egui::response::Flags::DRAG_STOPPED, true);
+                }
 
                 let size = response.rect.size();
 
@@ -187,7 +190,7 @@ impl Widget for Plug {
                     });
                 }
 
-                if response.drag_stopped() || self.forwarded_drag_stop {
+                if response.drag_stopped() {
                     match (self.plug_to, state.hovered_port_id()) {
                         // Connect event
                         (_, Some(port_id)) => {
@@ -207,7 +210,7 @@ impl Widget for Plug {
                     }
                 }
                 if let Some(port_id) = state.hovered_port_id() {
-                    if response.dragged() {
+                    if response.dragged() || self.forwarded_drag.is_some() {
                         state
                             .ephemeral
                             .event_of_plug

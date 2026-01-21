@@ -45,8 +45,8 @@ impl eframe::App for MyEguiApp {
 
             // add a port that you can create cables from
             ui.add_space(150.0);
-            let response = ui.add(Port::new(6usize));
-            if response.drag_started() {
+            let port_response = ui.add(Port::new(6usize));
+            if port_response.drag_started() {
                 self.connected.push((Some(6usize), None));
             }
 
@@ -56,39 +56,37 @@ impl eframe::App for MyEguiApp {
                     None => Plug::unplugged(),
                 }
             }
+            // ui.add_space(40.0);
+            // ui.dnd_drag_source("only_drag_source".into(), 1, |dnd_ui| {
+            //     dnd_ui.add(Port::new(9usize));
+            // });
+            // ui.scope_builder(egui::UiBuilder::new(), add_contents);
 
             let num_cables = self.connected.len();
 
             // draw existing cables
             for (index, (from, to)) in self.connected.iter_mut().enumerate() {
                 let mut my_cable = Cable::new(index, helper(from), helper(to));
-                if response.drag_started() && (index + 1) == num_cables {
-                    my_cable = my_cable.forward_drag(
-                        response.drag_delta()
-                            + (response.interact_pointer_pos().unwrap() - response.rect.center())
-                            - vec2(50.0, 0.0) // cable.rs line 102
-                            - vec2(8.0, 8.0) // half of utils.rs SIZE
-                            - vec2(2.0, 2.0) // extra offset to get the plug where I want it
-                            - (ui.next_widget_position() - response.rect.center()),
-                    )
-                } else if response.dragged() && (index + 1) == num_cables {
-                    my_cable = my_cable.forward_drag(response.drag_delta());
+                if index + 1 == num_cables {
+                    my_cable = my_cable.forward_drag_response(&port_response);
                 }
-                if response.drag_stopped() && (index + 1) == num_cables {
-                    my_cable = my_cable.forward_drag_stop();
-                }
-                let mut response = ui.add(my_cable);
+                let mut cable_response = ui.add(my_cable);
 
-                if let Some(new_from) = response.in_plug().connected_to() {
+                if let Some(new_from) = cable_response.in_plug().connected_to() {
                     *from = Some(new_from.downcast_ref::<usize>().unwrap().clone());
                 }
-                if let Some(new_to) = response.out_plug().connected_to() {
+                if let Some(new_to) = cable_response.out_plug().connected_to() {
                     *to = Some(new_to.downcast_ref::<usize>().unwrap().clone());
                 }
 
                 // not checking for disconnected cables, so when you drop a cable, it gets put back
                 // you could handle it here if you wanted to allow floating plugs
             }
+
+            ui.add_space(40.0);
+            ui.add(Port::new(7usize));
+            ui.add_space(40.0);
+            ui.add(Port::new(8usize));
         });
     }
 
