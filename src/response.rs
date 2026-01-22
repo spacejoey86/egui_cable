@@ -9,6 +9,8 @@ pub trait ResponseExt {
     fn in_plug(&mut self) -> PlugResponse;
     /// Returns a out-plug response
     fn out_plug(&mut self) -> PlugResponse;
+    /// Returns a connected dragged cable
+    fn drag_connected(&mut self) -> Option<Option<PortId>>;
 }
 
 pub struct PlugResponse(pub(crate) Response);
@@ -34,6 +36,14 @@ impl ResponseExt for Response {
             .1
             .clone();
         PlugResponse(response)
+    }
+
+    fn drag_connected(&mut self) -> Option<Option<PortId>> {
+        State::get_with_ctx(&mut self.ctx)
+            .ephemeral
+            .dropped_cable_plug
+            .get(&self.id)
+            .cloned()
     }
 }
 

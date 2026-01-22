@@ -26,6 +26,7 @@ pub(crate) struct GenerationState {
 pub(crate) struct EphemeralState {
     pub plug_responses_of_cable: HashMap<Id, (Response, Response)>,
     pub event_of_plug: HashMap<Id, Event>,
+    pub dropped_cable_plug: HashMap<Id, Option<PortId>>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

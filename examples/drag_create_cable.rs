@@ -1,6 +1,5 @@
 use eframe::egui;
-use egui::vec2;
-use egui_cable::prelude::*;
+use egui_cable::{cable::CableId, prelude::*};
 
 fn main() {
     let native_options = eframe::NativeOptions::default();
@@ -78,24 +77,13 @@ impl eframe::App for MyEguiApp {
 
             // add a port that you can create cables from
             ui.add_space(150.0);
-            let port_response = ui.add(Port::new(6usize));
-            if port_response.dragged() {
-                let dragged_cable_response = ui.add(
-                    Cable::new(num_cables, helper(&Some(6)), helper(&None))
-                        .forward_drag_response(&port_response),
-                );
-            }
-            if port_response.drag_stopped() {
-                let mut dragged_cable_response = ui.add(
-                    Cable::new(num_cables, helper(&Some(6)), helper(&None))
-                        .forward_drag_response(&port_response),
-                );
+            if let Some(dragged_cable_dropped_on) = ui
+                .add(Port::new(6usize).drag_create_cable(CableId::new(self.connected.len())))
+                .drag_connected()
+            {
                 self.connected.push((
                     Some(6usize),
-                    dragged_cable_response
-                        .out_plug()
-                        .connected_to()
-                        .map(|id| id.downcast_ref::<usize>().unwrap().clone()),
+                    dragged_cable_dropped_on.map(|id| id.downcast_ref::<usize>().unwrap().clone()),
                 ));
             }
 
