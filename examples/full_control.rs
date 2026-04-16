@@ -44,8 +44,8 @@ struct MyEguiApp {
 }
 
 impl eframe::App for MyEguiApp {
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::Window::new("full control").show(ctx, |ui| {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        egui::Window::new("full control").show(ui, |ui| {
             ui.text_edit_singleline(&mut self.name);
             if ui.button("Add port").clicked() {
                 self.ports.push(MyPort {

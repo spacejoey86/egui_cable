@@ -11,11 +11,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-egui = "0.33"
-epaint = "0.33"
+egui = "0.34"
+epaint = "0.34"
 # TODO: Leverage egui_hooks for much simpler code
 # is this similar to the new egui::Plugin ?
 # egui_hooks = "0.8"
 
 [dev-dependencies]
-eframe = "0.33"
+eframe = "0.34"

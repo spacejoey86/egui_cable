@@ -23,8 +23,8 @@ struct MyEguiApp {
 }
 
 impl eframe::App for MyEguiApp {
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::Window::new("Disconnect me").show(ctx, |ui| {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        egui::Window::new("Disconnect me").show(ui, |ui| {
             ui.label("Click the cable before disconnecting");
             ui.horizontal(|ui| {
                 ui.add(Port::new(0));

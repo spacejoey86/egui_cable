@@ -20,15 +20,15 @@ fn main() {
 struct MyEguiApp {}
 
 impl eframe::App for MyEguiApp {
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         egui::Window::new("My window")
             .default_pos(pos2(20.0, 100.0))
-            .show(ctx, |ui| {
+            .show(ui, |ui| {
                 ui.add(Port::new(0));
             });
         egui::Window::new("My window 2")
             .default_pos(pos2(200.0, 20.0))
-            .show(ctx, |ui| {
+            .show(ui, |ui| {
                 ui.add(Port::new(1));
 
                 ui.add(Cable::new(0, Plug::to(0).lock(), Plug::to(1)));

@@ -20,8 +20,8 @@ struct MyEguiApp {
 }
 
 impl eframe::App for MyEguiApp {
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::CentralPanel::default().show(ctx, |ui| {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        egui::CentralPanel::default_margins().show_inside(ui, |ui| {
             // draw a load of ports
             ui.add_space(40.0);
             ui.horizontal(|ui| {
