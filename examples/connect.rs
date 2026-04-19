@@ -21,8 +21,8 @@ struct MyEguiApp {
 }
 
 impl eframe::App for MyEguiApp {
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::Window::new("Connect me").show(ctx, |ui| {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        egui::Window::new("Connect me").show(ui, |ui| {
             ui.horizontal(|ui| {
                 ui.add(Port::new(0usize));
                 ui.add_space(40.0);
